@@ -23,7 +23,7 @@ sites <- st_read("H:/Bowron_river/data/Bowron.ssn/sites.shp")
 
 # Bowron Watershed Stream Temperature Modelling
 
-R code to model summer stream temperature under different climate scenarios in the Bowron Watershed in Northern British Columbia. Stream and air temperature records have been collected as model input. The  code reads in watershed shapefile as a *spatial stream network* object created from the [STARS](https://www.fs.fed.us/rm/boise/AWAE/projects/SSN_STARS/software_data.html) package. This repository contains the modelling component using the [ssn](https://cran.r-project.org/web/packages/SSN/index.html) package and [NorWeST](https://www.fs.fed.us/rm/boise/AWAE/projects/NorWeST.html) method.
+R code to model summer stream temperature under different climate scenarios in the Bowron watershed in Northern British Columbia. Stream and air temperature records have been collected as model input. The  code reads in watershed shapefile as a *spatial stream network* object created from the [STARS](https://www.fs.fed.us/rm/boise/AWAE/projects/SSN_STARS/software_data.html) package. This repository contains the modelling component using the [ssn](https://cran.r-project.org/web/packages/SSN/index.html) package and [NorWeST](https://www.fs.fed.us/rm/boise/AWAE/projects/NorWeST.html) method.
 
 ### Study Site
 
@@ -56,7 +56,7 @@ ggplot() +
 
 ### Project Status
 
-This project is an active multi-year project. Each summer, new and air temperature records will be collected on the field and added to the model.
+This project is an active multi-year project. Each summer, new stream and air temperature records will be collected on the field and added to the model.
 
 ### Goals/Roadmap
 
