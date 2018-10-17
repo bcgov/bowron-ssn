@@ -3,7 +3,7 @@
 Bowron Watershed Stream Temperature Modelling
 =============================================
 
-R code to model summer stream temperature under different climate scenarios in the Bowron watershed in Northern British Columbia. Stream and air temperature records have been collected as model input. The code reads in watershed shapefile as a *spatial stream network* object created from the [STARS](https://www.fs.fed.us/rm/boise/AWAE/projects/SSN_STARS/software_data.html) package. This repository contains the modelling component using the [ssn](https://cran.r-project.org/web/packages/SSN/index.html) package and [NorWeST](https://www.fs.fed.us/rm/boise/AWAE/projects/NorWeST.html) method.
+R code to model summer stream temperature under different climate scenarios in the Bowron watershed in Northern British Columbia. Stream and air temperature records have been collected, along with site-specific variables such as tree cover, drainage area, and slope as model input. The code reads in the *spatial stream network* shapefile created from the [STARS](https://www.fs.fed.us/rm/boise/AWAE/projects/SSN_STARS/software_data.html) package. This repository contains the modelling component using the [ssn](https://cran.r-project.org/web/packages/SSN/index.html) package and [NorWeST](https://www.fs.fed.us/rm/boise/AWAE/projects/NorWeST.html) method.
 
 ### Study Site
 
@@ -44,7 +44,7 @@ This project is an active multi-year project. Each summer, new stream and air te
 
 ### Goals/Roadmap
 
-The goal of this project is to use the modelled temperature records along with environmental and topographic variables to predict bull trout density in the Bowron watershed under various conditions and climate scenarios.
+The goal of this project is to use the modelled temperature records along with environmental and topographic variables to predict bull trout density in the Bowron watershed under various conditions and climate scenarios. We also experiment with R's geospatial capacities by conducting a series of geoprocessing and outputting resultant maps.
 
 ### Getting Help or Reporting an Issue
 
