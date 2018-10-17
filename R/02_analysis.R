@@ -12,12 +12,18 @@
 
 library(lubridate)
 
+## reading in stream temperature files containing all sites output from 01_load.R
 h2o_df <- read_csv("../data/Bowron_river/summer_18/csv/h2o.csv")
 
-h2o_df$date <- date(h2o_df$date)
+## reading in table containing site coordinates
+df_ref <- read_csv("../data/Bowron_river/summer_18/csv/Site_Details.csv") %>%
+  select(newname, Latitude, Longitude)
 
 ## obtaining August mean water temperature for each site
 h2o_df <- h2o_df %>%
   filter(month(date) == 8) %>%
   group_by(site) %>%
-  summarise(stream_temp = mean(stream_temp, na.rm = TRUE))
+  dplyr::summarise(stream_temp = mean(stream_temp, na.rm = TRUE))
+
+## adding site coordinates to stream temperature file
+h2o_df <- left_join(h2o_df, df_ref, by = c("site" = "newname"))
