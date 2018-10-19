@@ -17,8 +17,18 @@ library(readxl)
 h2o_dir <- dir("../data/Bowron_river/summer_18/", pattern = "H2O|H20|h2o|h20")
 
 ## listing air temperature files stored in files named with either air or rh (relative humidity)
-air_dir <- dir("../data/Bowron_river/summer_18/", pattern = "air")
-rh_dir <- dir("../data/Bowron_river/summer_18/", pattern = "RH|rh|rH")
+air_dir <- as.list(dir("../data/Bowron_river/summer_18/", pattern = "air"))
+rh_dir <- as.list(dir("../data/Bowron_river/summer_18/", pattern = "RH|rh|rH"))
+
+## prefer air temperature recorded from rh sensors over air sensors
+for (i in 1:length(air_dir)) {
+  if (sub("_.*", "", air_dir[i]) %in% sub("_.*", "", rh_dir)) {
+    print(air_dir[i])
+    air_dir[i] <- NULL
+  }
+}
+
+air_dir <- append(air_dir, rh_dir)
 
 ## creating empty tibbles to later row bind with newly added files
 h2o_df <- tibble(site = character(),
@@ -27,9 +37,6 @@ h2o_df <- tibble(site = character(),
 air_df <- tibble(site = character(),
                  date = as.POSIXct(character()),
                  air_temp = numeric())
-rh_df <- tibble(site = character(),
-                date = as.POSIXct(character()),
-                air_temp = numeric())
 
 ## adding in all stream temperature files using readxl package
 for (i in 1:length(h2o_dir)) {
@@ -43,25 +50,14 @@ for (i in 1:length(h2o_dir)) {
 }
 
 ## adding in air temperature files
-## TSUS FLY not sure which site it belongs to
 for (i in 1:length(air_dir)) {
   air <- read_xlsx(paste0("../data/Bowron_river/summer_18/", air_dir[i]), sheet = 1, skip = 1)
   site_name <- sub("_.*", "", air_dir[i])
   air <- select(air, grep("Date|date", colnames(air)), grep("Temp,", colnames(air))) %>%
     mutate(site = site_name)
   colnames(air)[1:2] <- c("date", "air_temp")
+  print(head(air))
   air_df <- bind_rows(air_df, air)
-}
-
-## duplicates of RH and air?? Some doesn't have air only stream??
-for (i in 1:length(rh_dir)) {
-  rh <- read_xlsx(paste0("../data/Bowron_river/summer_18/", rh_dir[i]), sheet = 1, skip = 1)
-  site_name <- sub("_.*", "", rh_dir[i])
-  rh <- select(rh, grep("Date|date", colnames(rh)), grep("Temp,", colnames(rh))) %>%
-    mutate(site = site_name)
-  colnames(rh)[1:2] <- c("date", "air_temp")
-  # print(head(rh))
-  rh_df <- bind_rows(rh_df, rh)
 }
 
 write_csv(h2o_df, "../data/Bowron_river/summer_18/csv/h2o.csv")
