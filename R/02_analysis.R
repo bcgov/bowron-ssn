@@ -14,16 +14,28 @@ library(lubridate)
 
 ## reading in stream temperature files containing all sites output from 01_load.R
 h2o_df <- read_csv("../data/Bowron_river/summer_18/csv/h2o.csv")
+air_df <- read_csv("../data/Bowron_river/summer_18/csv/air.csv")
 
 ## reading in table containing site coordinates
 df_ref <- read_csv("../data/Bowron_river/summer_18/csv/Site_Details.csv") %>%
-  select(newname, Latitude, Longitude)
+  select(site, Latitude, Longitude)
 
-## obtaining August mean water temperature for each site
+## obtaining August mean water and air temperature for each site
 h2o_df <- h2o_df %>%
   filter(month(date) != 7 & month(date) != 9) %>%
   group_by(site) %>%
   dplyr::summarise(WTRTMP = mean(stream_temp, na.rm = TRUE))
 
+air_df <- air_df %>%
+  filter(month(date) != 7 & month(date) != 9 & month(date) != 10) %>%
+  group_by(site) %>%
+  dplyr::summarise(AirMEANc = mean(air_temp, na.rm = TRUE))
+
 ## adding site coordinates to stream temperature file
-h2o_df <- left_join(h2o_df, df_ref, by = c("site" = "newname"))
+h2o_df <- right_join(df_ref, h2o_df, by = "site")
+
+## joining air and water temp dataframes
+df <- left_join(h2o_df, air_df, by = "site")
+
+## outputting df
+write_csv(df, "../data/Bowron_river/summer_18/csv/temp_summary.csv")
