@@ -56,7 +56,6 @@ for (i in 1:length(air_dir)) {
   air <- select(air, grep("Date|date", colnames(air)), grep("Temp,", colnames(air))) %>%
     mutate(site = site_name)
   colnames(air)[1:2] <- c("date", "air_temp")
-  print(head(air))
   air_df <- bind_rows(air_df, air)
 }
 

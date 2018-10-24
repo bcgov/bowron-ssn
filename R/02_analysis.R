@@ -21,9 +21,9 @@ df_ref <- read_csv("../data/Bowron_river/summer_18/csv/Site_Details.csv") %>%
 
 ## obtaining August mean water temperature for each site
 h2o_df <- h2o_df %>%
-  filter(month(date) == 8) %>%
+  filter(month(date) != 7 & month(date) != 9) %>%
   group_by(site) %>%
-  dplyr::summarise(stream_temp = mean(stream_temp, na.rm = TRUE))
+  dplyr::summarise(WTRTMP = mean(stream_temp, na.rm = TRUE))
 
 ## adding site coordinates to stream temperature file
 h2o_df <- left_join(h2o_df, df_ref, by = c("site" = "newname"))
