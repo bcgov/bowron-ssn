@@ -29,19 +29,19 @@ df_ref$Longitude <- as.double(df_ref$Longitude)
 ## obtaining August mean water and air temperature for each site, retaining only
 ## complete days of measurements. Taispai taken out, Grizzly1 only daily summaries
 h2o_df <- h2o_df %>%
-  filter(month(date) != 7 & month(date) != 9) %>%
+  filter(month(date) != 7 & month(date) != 9 & complete.cases(stream_temp)) %>%
   group_by(site, date(date)) %>%
   add_tally() %>%  # adds total count of observations in a day
   filter(site == "Grizzly1" | n >= 96) %>%
   group_by(site) %>%
   dplyr::summarise(WTRTMP = mean(stream_temp, na.rm = TRUE))
 
-## Haggen 2 taken out
+## Haggen 2 taken out, Bowron 1 records hourly instead of every 15 mins
 air_df <- air_df %>%
-  filter(month(date) != 7 & month(date) != 9 & month(date) != 10) %>%
+  filter(month(date) != 7 & month(date) != 9 & month(date) != 10 & complete.cases(air_temp)) %>%
   group_by(site, date(date)) %>%
   add_tally() %>%
-  filter(n >= 96) %>%
+  filter(site == "Bowron1" | n >= 96) %>%
   group_by(site) %>%
   dplyr::summarise(AirMEANc = mean(air_temp, na.rm = TRUE))
 
