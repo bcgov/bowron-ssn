@@ -18,16 +18,25 @@ air_df <- read_csv("../data/Bowron_river/summer_18/csv/air.csv")
 
 ## reading in table containing site coordinates
 df_ref <- read_csv("../data/Bowron_river/summer_18/csv/Site_Details.csv") %>%
-  select(site, Latitude, Longitude)
+  select(site, Latitude, Longitude, "Altitude (m)") %>%
+  rename("Elevation" = "Altitude (m)")
 
-## obtaining August mean water and air temperature for each site
+## obtaining August mean water and air temperature for each site, retaining only
+## complete days of measurements. Taispai taken out, Grizzly1 only daily summaries
 h2o_df <- h2o_df %>%
   filter(month(date) != 7 & month(date) != 9) %>%
+  group_by(site, date(date)) %>%
+  add_tally() %>%  # adds total count of observations in a day
+  filter(site == "Grizzly1" | n >= 96) %>%
   group_by(site) %>%
   dplyr::summarise(WTRTMP = mean(stream_temp, na.rm = TRUE))
 
+## Haggen 2 taken out
 air_df <- air_df %>%
   filter(month(date) != 7 & month(date) != 9 & month(date) != 10) %>%
+  group_by(site, date(date)) %>%
+  add_tally() %>%
+  filter(n >= 96) %>%
   group_by(site) %>%
   dplyr::summarise(AirMEANc = mean(air_temp, na.rm = TRUE))
 
