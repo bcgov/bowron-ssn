@@ -13,13 +13,18 @@
 library(lubridate)
 
 ## reading in stream temperature files containing all sites output from 01_load.R
+## and three historical stream temperature sites
 h2o_df <- read_csv("../data/Bowron_river/summer_18/csv/h2o.csv")
 air_df <- read_csv("../data/Bowron_river/summer_18/csv/air.csv")
+his_df <- read_csv("C:/Users/yuwang/Projects/data/Bowron_river/data/John/all.csv")
 
 ## reading in table containing site coordinates
 df_ref <- read_csv("../data/Bowron_river/summer_18/csv/Site_Details.csv") %>%
   select(site, Latitude, Longitude, "Altitude (m)") %>%
   rename("Elevation" = "Altitude (m)")
+
+df_ref$Latitude <- as.double(df_ref$Latitude)
+df_ref$Longitude <- as.double(df_ref$Longitude)
 
 ## obtaining August mean water and air temperature for each site, retaining only
 ## complete days of measurements. Taispai taken out, Grizzly1 only daily summaries
@@ -45,6 +50,8 @@ h2o_df <- right_join(df_ref, h2o_df, by = "site")
 
 ## joining air and water temp dataframes
 df <- left_join(h2o_df, air_df, by = "site")
+
+df <- full_join(df, his_df)
 
 ## outputting df
 write_csv(df, "../data/Bowron_river/summer_18/csv/temp_summary.csv")
