@@ -45,7 +45,9 @@ air_sum <- air_df %>%
   # group_by(site, date(date)) %>%
   dplyr::summarise(mean_air = mean(air_temp),
                    max_air = max(air_temp),
-                   min_air = min(air_temp))
+                   min_air = min(air_temp)) %>%
+  mutate(sensor = case_when(site %in% rh_sites ~ "rh",
+                            !(site %in% rh_sites) ~ "air"))
 
 ## obtaining August mean water and air temperature for each site, retaining only
 ## complete days of measurements. Taspai taken out, Grizzly1 only daily summaries
@@ -68,11 +70,14 @@ air_df <- air_df %>%
 
 ## adding site coordinates to stream temperature file
 h2o_df <- right_join(df_ref, h2o_df, by = "site")
+daily_sum_air <- right_join(df_ref, air_sum, by = "site")
+daily_sum_h2o <- right_join(df_ref, h2o_sum, by = "site")
 
 ## joining air and water temp dataframes
 df <- left_join(h2o_df, air_df, by = "site")
-
 df <- full_join(df, his_df)
 
 ## outputting df
 write_csv(df, "../data/Bowron_river/summer_18/csv/temp_summary.csv")
+write_csv(daily_sum_air, "../data/Bowron_river/summer_18/csv/daily_air-temp.csv")
+write_csv(daily_sum_h2o, "../data/Bowron_river/summer_18/csv/daily_stream-temp.csv")

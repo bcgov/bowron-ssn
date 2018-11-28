@@ -19,10 +19,11 @@ h2o_dir <- dir("../data/Bowron_river/summer_18/", pattern = "H2O|H20|h2o|h20")
 ## listing air temperature files stored in files named with either air or rh (relative humidity)
 air_dir <- as.list(dir("../data/Bowron_river/summer_18/", pattern = "air"))
 rh_dir <- as.list(dir("../data/Bowron_river/summer_18/", pattern = "RH|rh|rH"))
+rh_sites <- sub("_.*", "", rh_dir)
 
 ## prefer air temperature recorded from rh sensors over air sensors
 for (i in 1:length(air_dir)) {
-  if (sub("_.*", "", air_dir[i]) %in% sub("_.*", "", rh_dir)) {
+  if (sub("_.*", "", air_dir[i]) %in% rh_sites) {
     print(air_dir[i])
     air_dir[i] <- NULL
   }
