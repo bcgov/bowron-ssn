@@ -32,7 +32,6 @@ h2o_sum <- h2o_df %>%
   group_by(site, date(date)) %>%
   add_tally() %>%
   filter(n >= 96) %>%
-  # group_by(site, date(date)) %>%
   dplyr::summarise(mean_stream = mean(stream_temp),
                    max_stream = max(stream_temp),
                    min_stream = min(stream_temp))
@@ -42,7 +41,6 @@ air_sum <- air_df %>%
   group_by(site, date(date)) %>%
   add_tally() %>%
   filter(n == 24 | n == 96) %>% # recording once or four times an hours as full day
-  # group_by(site, date(date)) %>%
   dplyr::summarise(mean_air = mean(air_temp),
                    max_air = max(air_temp),
                    min_air = min(air_temp)) %>%

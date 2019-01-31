@@ -23,9 +23,8 @@ library(rmapshaper)
 ## modelling prep ####
 ## reading in each component for the Spatial Stream Network file
 # edges <- st_read("../data/Bowron_river/summer_18/ssn/edges.shp")
-# sites <- st_read("../data/Bowron_river/summer_18/ssn/sites.shp") # original sites
-# sites18 <- st_read("../data/Bowron_river/summer_18/ssn/Bowron_Air_Water_join.shp") #18 sites
-# preds <- st_read("../data/Bowron_river/summer_18/ssn/Preds1.shp")
+sites18 <- st_read("../data/Bowron_river/summer_18/ssn/Bowron_Air_Water_join.shp")
+preds <- st_read("../data/Bowron_river/summer_18/ssn/preds.shp")
 # edge <- ms_simplify(edges[1], 0.05) # simplifying only for the viz
 
 ## plotting the study sites in the watershed
