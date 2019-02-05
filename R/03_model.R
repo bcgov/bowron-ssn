@@ -43,9 +43,11 @@ ggplot() +
   theme(panel.grid = element_line(colour = 'transparent'))
 
 ## SSN modelling ####
-## reading in 2018 bowron watershed Spatial Stream Network files
+## reading in 2018/future prediction bowron watershed Spatial Stream Network files
 ## preds contains ClimateBC predictions august mean, mean monthly and annual precip
 ssn <- importSSN("../data/Bowron_river/summer_18/ssn/", predpts = "preds")
+ssn <- importSSN("../data/Bowron_river/summer_18/ssn/", predpts = "preds25")
+ssn <- importSSN("../data/Bowron_river/summer_18/ssn/", predpts = "preds55")
 
 ## creating distance matrix for generalised linear model
 # createDistMat(ssn, "preds", o.write = TRUE)
@@ -55,9 +57,6 @@ glm1 <- glmssn(WTRTMP ~ AirMEANc + ELEV + SLOPE + CANOPY + ASPECT + h2oAreaKm2 +
                ssn, CorModels = c("Exponential.tailup"), addfunccol = "afvArea")
 summary(glm1)
 
-glm2 <- glmssn(WTRTMP ~ AirMEANc + ASPECT + CANOPY, ssn,
-               CorModels = c("Exponential.tailup"), addfunccol = "afvArea")
-summary(glm2)
 
 glm2 <- glmssn(WTRTMP ~ AirMEANc + CANOPY + ASPECT + h2oAreaKm2, ssn,
                CorModels = c("Exponential.tailup"), addfunccol = "afvArea")
@@ -130,4 +129,6 @@ ggplot(pred3df, aes(LONGITUDE, LATITUDE, colour = WTRTMP_cat, size = WTRTMP.pred
 
 
 ## outputting prediction results
-write.csv(pred2df, "../data/bowron_stream_predictions.csv", row.names = FALSE)
+write.csv(pred1df, "../data/bowron_pred1.csv", row.names = FALSE)
+write.csv(pred2df, "../data/bowron_pred2.csv", row.names = FALSE)
+write.csv(pred3df, "../data/bowron_pred3.csv", row.names = FALSE)
